@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="pl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <link rel="stylesheet" href="style.css" />
+    <title>Kino</title>
+  </head>
+  <body>
+    <div class="movie-container">
+      <label>Wybierz film:</label>
+      <select id="movie">
+        <option value="20">Teściowie 3 (20 zł)</option>
+        <option value="25">Czarny telefon 2 (25 zł)</option>
+        <option value="19">Chopin, Chopin! (19 zł)</option>
+        <option value="15">Koszmarek (15 zł)</option>
+      </select>
+    </div>
+
+    <ul class="showcase">
+      <li>
+        <div class="seat"></div>
+        <small>Wolne miejsca</small>
+      </li>
+      <li>
+        <div class="seat selected"></div>
+        <small>Wybrane</small>
+      </li>
+      <li>
+        <div class="seat occupied"></div>
+        <small>Zajęte</small>
+      </li>
+    </ul>
+
+    <div class="container">
+      <div class="screen"></div>
+
+      <div class="row">
+        <div class="seat"></div>
+        <div class="seat"></div>
+        <div class="seat"></div>
+        <div class="seat"></div>
+        <div class="seat"></div>
+        <div class="seat"></div>
+        <div class="seat"></div>
+        <div class="seat"></div>
+      </div>
+      <div class="row">
+        <div class="seat"></div>
+        <div class="seat"></div>
+        <div class="seat"></div>
+        <div class="seat"></div>
+        <div class="seat"></div>
+        <div class="seat"></div>
+        <div class="seat"></div>
+        <div class="seat"></div>
+      </div>
+      <div class="row">
+        <div class="seat"></div>
+        <div class="seat"></div>
+        <div class="seat"></div>
+        <div class="seat"></div>
+        <div class="seat"></div>
+        <div class="seat"></div>
+        <div class="seat"></div>
+        <div class="seat"></div>
+      </div>
+      <div class="row">
+        <div class="seat"></div>
+        <div class="seat"></div>
+        <div class="seat"></div>
+        <div class="seat"></div>
+        <div class="seat"></div>
+        <div class="seat"></div>
+        <div class="seat"></div>
+        <div class="seat"></div>
+      </div>
+      <div class="row">
+        <div class="seat"></div>
+        <div class="seat"></div>
+        <div class="seat"></div>
+        <div class="seat"></div>
+        <div class="seat"></div>
+        <div class="seat"></div>
+        <div class="seat"></div>
+        <div class="seat"></div>
+      </div>
+      <div class="row">
+        <div class="seat"></div>
+        <div class="seat"></div>
+        <div class="seat"></div>
+        <div class="seat"></div>
+        <div class="seat"></div>
+        <div class="seat"></div>
+        <div class="seat"></div>
+        <div class="seat"></div>
+      </div>
+    </div>
+
+    <p class="text">
+     Liczba wybranych miejsc: <span id="count">0</span>, łączna kwota: <span id="total">0</span> zł.
+    </p>
+
+    <script>
+      let miejsca = document.querySelectorAll(".container .seat");
+      let ile_miejsc = 0;
+      let okno_miejsca = document.querySelector("#count");
+      let kwota = document.querySelector("#total");
+      let suma = 0;
+      miejsca.forEach(el => {
+        if(!(el.classList.contains("occupied"))){
+          el.addEventListener("click", klik);
+        }
+      });
+
+      function nowe_miejsca(){
+        ile_miejsc = 0;
+        okno_miejsca.textContent = ile_miejsc;
+        suma = 0;
+        kwota.textContent = suma;
+        miejsca.forEach(element => {
+          if(element.classList.contains("selected")){
+            element.classList.remove("selected");
+          }
+          else if(element.classList.contains("occupied")){
+            element.classList.remove("occupied");
+          }
+        });
+
+        for(let i = 0; i < Math.floor(Math.random() * 7) + 4; i++){
+          let losowa = Math.floor(Math.random() * miejsca.length);
+          if((!miejsca[losowa].classList.contains("occupied"))){
+            miejsca[losowa].classList.add("occupied");
+          }
+        }
+      }
+
+      function klik(e){
+        let cena = document.querySelector("#movie").value;
+        if(e.target.classList.contains("selected")){
+          e.target.classList.remove("selected");
+          ile_miejsc -= 1;
+          okno_miejsca.textContent = ile_miejsc;
+          suma -= Number(cena);
+          kwota.textContent = suma;
+        }
+        else{
+          e.target.classList.add("selected");
+          ile_miejsc += 1;
+          okno_miejsca.textContent = ile_miejsc;
+          suma += Number(cena);
+          kwota.textContent = suma;
+        }
+      }
+
+      document.querySelector("#movie").addEventListener("input", nowe_miejsca);
+      nowe_miejsca();
+    </script>
+  </body>
+</html>
